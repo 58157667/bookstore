@@ -44,7 +44,12 @@
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-security</artifactId>
 </dependency>
-
+<!-- SpringBoot 测试依赖 -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-test</artifactId>
+    <scope>test</scope>
+</dependency>
 <!-- thymeleaf security标签（页面判断登录状态） -->
 <dependency>
     <groupId>org.thymeleaf.extras</groupId>
