@@ -42,6 +42,7 @@
 <div class="search-box">
     <form th:action="@{/book/list}" method="get" style="display:flex;gap:10px;align-items:center;">
         <!-- 分类下拉 -->
+        
         <select name="categoryId">
             <option value="">全部分类</option>
             <th:each="cat : ${categoryList}">
@@ -59,7 +60,7 @@
     </form>
 </div>
 
-<!-- 图书表格（仅修改3个链接，其余完全不变） -->
+<!-- 图书表格（新增分类列） -->
 <table>
     <tr>
         <th>ID</th>
@@ -74,17 +75,14 @@
         <td th:text="${item.categoryName != null ? item.categoryName : '未分类'}"></td>
         <td th:text="${item.title}"></td>
         <td>
-            <!-- 修改1：PDF链接二次编码 -->
-            <a th:href="${#uris.encodeURIComponent(item.bookFileUrl)}" target="_blank">打开PDF</a>
+            <a th:href="${item.bookFileUrl}" target="_blank">打开PDF</a>
         </td>
         <td>
-            <!-- 修改2：图片src二次编码 -->
-            <img th:if="${item.coverImageUrl}" th:src="${#uris.encodeURIComponent(item.coverImageUrl)}" class="cover-img">
+            <img th:if="${item.coverImageUrl}" th:src="${item.coverImageUrl}" class="cover-img">
             <span th:unless="${item.coverImageUrl}">无封面</span>
         </td>
         <td>
-            <!-- 修改3：封面跳转链接二次编码 -->
-            <a th:href="${#uris.encodeURIComponent(item.coverImageUrl)}" target="_blank">查看图片</a>
+            <a th:href="${item.coverImageUrl}" target="_blank">查看图片</a>
         </td>
     </tr>
 </table>
@@ -102,4 +100,4 @@
        th:class="${current==totalPage}?'active':''">尾页</a>
 </div>
 </body>
-</html>
+</html> 做个改动让这里的地址栏也显示url编码 现在数据库里是url编码，地址栏是汉字，其他不做如何改动
