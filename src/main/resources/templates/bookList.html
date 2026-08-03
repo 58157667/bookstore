@@ -74,8 +74,11 @@
         <td th:text="${item.id}"></td>
         <td th:text="${item.categoryName != null ? item.categoryName : '未分类'}"></td>
         <td th:text="${item.title}"></td>
-        <td>
-            <a th:href="${item.bookFileUrl}">打开PDF</a>
+        <td><a th:href="${#strings.replace(item.bookFileUrl, '%', '%25')}"
+   target="_blank">
+    打开PDF
+</a>
+            <!-- <a th:href="${item.bookFileUrl}">打开PDF</a> -->
         </td>
         <td>
             <img th:if="${item.coverImageUrl}" th:src="${item.coverImageUrl}" class="cover-img">
