@@ -33,16 +33,16 @@
 <!-- 搜索+分类下拉表单 -->
 <div class="search-box">
     <form th:action="@{/book/list}" method="get" style="display:flex;gap:10px;align-items:center;">
-        <!-- 分类下拉（修复重复循环） -->
-        <select name="categoryId">
-            <option value="">全部分类</option>
-            <th:each="cat : ${categoryList}">
-                <option th:value="${cat.id}"
-                        th:selected="${selectCategoryId == cat.id}"
-                        th:text="${cat.name}">
-                </option>
-            </th:each>
-        </select>
+      <select name="categoryId">
+    <option value="">全部分类</option>
+    <!-- 只循环一次，移除内层重复th:each -->
+    <th:each="cat : ${categoryList}">
+        <option th:value="${cat.id}"
+                th:selected="${(cat != null) and (selectCategoryId == cat.id)}"
+                th:text="${cat.name}">
+        </option>
+    </th:each>
+</select>
         <!-- 书名搜索 -->
         <input type="text" name="keyword" placeholder="输入书名模糊查询" th:value="${keyword}">
         <button type="submit">搜索</button>
