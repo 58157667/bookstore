@@ -43,16 +43,15 @@
     <form th:action="@{/book/list}" method="get" style="display:flex;gap:10px;align-items:center;">
         <!-- 分类下拉 -->
         
-        <select name="categoryId">
-            <option value="">全部分类</option>
-            <th:each="cat : ${categoryList}">
-                <option th:each="cat : ${categoryList}"
-        th:value="${cat.id}"
-        th:selected="${cat != null and selectCategoryId == cat.id}"
-        th:text="${cat.name}">
-</option>
-            </th:each>
-        </select>
+       <select name="categoryId">
+    <option value="">全部分类</option>
+    <th:each="cat : ${categoryList}">
+        <option th:value="${cat.id}"
+                th:selected="${cat != null and selectCategoryId == cat.id}"
+                th:text="${cat.name}">
+        </option>
+    </th:each>
+</select>
         <!-- 书名搜索 -->
         <input type="text" name="keyword" placeholder="输入书名模糊查询" th:value="${keyword}">
         <button type="submit">搜索</button>
@@ -61,6 +60,7 @@
 </div>
 
 <!-- 图书表格（新增分类列） -->
+<!-- 图书表格（修正onclick安全报错） -->
 <table>
     <tr>
         <th>ID</th>
@@ -74,18 +74,17 @@
         <td th:text="${item.id}"></td>
         <td th:text="${item.categoryName != null ? item.categoryName : '未分类'}"></td>
         <td th:text="${item.title}"></td>
-        <td><a href="javascript:void(0)"
-   th:onclick="|window.open('${item.bookFileUrl}')|">
-    打开PDF
-</a>
-            <!-- <a th:href="${item.bookFileUrl}">打开PDF</a> -->
+        <td>
+            <!-- 仅this入参，th表达式放data-url，不在onclick里 -->
+            <a href="javascript:void(0)" onclick="openUrl(this)" data-url="${item.bookFileUrl}" target="_blank">打开PDF</a>
         </td>
         <td>
+            <!-- 图片src保持原样，预览不需要二次编码 -->
             <img th:if="${item.coverImageUrl}" th:src="${item.coverImageUrl}" class="cover-img">
             <span th:unless="${item.coverImageUrl}">无封面</span>
         </td>
         <td>
-            <a th:href="${item.coverImageUrl}" target="_blank">查看图片</a>
+            <a href="javascript:void(0)" onclick="openUrl(this)" data-url="${item.coverImageUrl}" target="_blank">查看图片</a>
         </td>
     </tr>
 </table>
@@ -101,6 +100,14 @@
        th:href="@{/book/list(page=${current}+1,keyword=${keyword},categoryId=${selectCategoryId})}">下一页</a>
     <a th:href="@{/book/list(page=${totalPage},keyword=${keyword},categoryId=${selectCategoryId})}"
        th:class="${current==totalPage}?'active':''">尾页</a>
-</div>
+</div><script>
+function openUrl(el) {
+    // 从data-url取出原始编码链接
+    const rawUrl = el.dataset.url;
+    // 整体二次编码，地址栏全百分号无汉字
+    const safeFullUrl = encodeURIComponent(rawUrl);
+    window.open(safeFullUrl, '_blank');
+}
+</script>
 </body>
 </html> 做个改动让这里的地址栏也显示url编码 现在数据库里是url编码，地址栏是汉字，其他不做如何改动
