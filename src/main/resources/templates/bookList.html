@@ -43,11 +43,11 @@
     <form th:action="@{/book/list}" method="get" style="display:flex;gap:10px;align-items:center;">
         <!-- 分类下拉 -->
         
-       <select name="categoryId">
+      <select name="categoryId">
     <option value="">全部分类</option>
     <th:each="cat : ${categoryList}">
         <option th:value="${cat.id}"
-                th:selected="${cat != null and selectCategoryId == cat.id}"
+                th:selected="${cat != null and selectCategoryId == cat?.id}"
                 th:text="${cat.name}">
         </option>
     </th:each>
